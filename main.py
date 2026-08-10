@@ -1,55 +1,58 @@
-from fastapi import FastAPI, HTTPException
-from models import Todo, TodoCreate
-from database import init_db
+from fastapi import FastAPI, HTTPException, status
+from database import init_db, get_db_connection
+from models import TodoCreate
 
 app = FastAPI()
 
 init_db()
 
-todos: list[Todo] = []
-todo_id_counter = 1
+def row_to_dict(row):
+    return {
+        "id": row["id"],
+        "title": row["title"],
+        "completed": bool(row["completed"])
+    }
 
-@app.get("/todos")
+# Read Endpoints (SQL SELECT)
+
+@app.get("/todos", status_code=status.HTTP_200_OK)
 def get_all_todos():
-    return todos
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM tasks")
+    rows = cursor.fetchall()
+    conn.close()
+    return [row_to_dict(row) for row in rows]
 
-@app.post("/todos", response_model=Todo, status_code=201)
-def create_todo(todo: TodoCreate):
-    global todo_id_counter
-    new_todo = Todo(
-        id=todo_id_counter,
-        title=todo.title,
-        description=todo.description,
-        completed=todo.completed
-    )
-    todo_id_counter += 1
-    todos.append(new_todo)
-    return new_todo
-
-@app.get("/todos/{todo_id}", response_model=Todo)
+@app.get("/todos/{todo_id}", status_code=status.HTTP_200_OK)
 def get_todo(todo_id: int):
-    for todo in todos:
-        if todo.id == todo_id:
-            return todo
-    raise HTTPException(status_code=404, detail="Todo not found")
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM tasks WHERE id = ?", (todo_id,))
+    row = cursor.fetchone()
+    conn.close()
+    
+    if not row:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail="Todo not found"
+        )
+    
+    return row_to_dict(row)
 
-@app.put("/todos/{todo_id}", response_model=Todo)
+#Placeholders!!!
+
+@app.post("/todos", status_code=status.HTTP_201_CREATED)
+def create_todo(todo: TodoCreate):
+    # We will write the SQL INSERT here in Stage 2
+    pass
+
+@app.put("/todos/{todo_id}")
 def update_todo(todo_id: int, updated_todo: TodoCreate):
-    for index, todo in enumerate(todos):
-        if todo.id == todo_id:
-            todos[index] = Todo(
-                id=todo_id,
-                title=updated_todo.title,
-                description=updated_todo.description,
-                completed=updated_todo.completed
-            )
-            return todos[index]
-    raise HTTPException(status_code=404, detail="Todo not found")
+    # We will write the SQL UPDATE here in Stage 3
+    pass
 
 @app.delete("/todos/{todo_id}")
 def delete_todo(todo_id: int):
-    for index, todo in enumerate(todos):
-        if todo.id == todo_id:
-            todos.pop(index)
-            return {"message": "Todo deleted successfully"}
-    raise HTTPException(status_code=404, detail="Todo not found")
+    # We will write the SQL DELETE here in Stage 3
+    pass

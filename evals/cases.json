@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "label": "Clear Bug Report",
+    "input": "Application crashes when user clicks the submit button on checkout page.",
+    "expected_category": "Bug",
+    "expected_priority": "High"
+  },
+  {
+    "id": 2,
+    "label": "Feature Request",
+    "input": "Add dark mode toggle switch to settings UI.",
+    "expected_category": "Development",
+    "expected_priority": "Medium"
+  },
+  {
+    "id": 3,
+    "label": "Documentation Task",
+    "input": "Write README setup instructions for new developers joining the project.",
+    "expected_category": "Documentation",
+    "expected_priority": "Low"
+  },
+  {
+    "id": 4,
+    "label": "Maintenance Work",
+    "input": "Upgrade FastAPI and Pytest packages to their latest versions.",
+    "expected_category": "Maintenance",
+    "expected_priority": "Medium"
+  },
+  {
+    "id": 5,
+    "label": "Urgent Security Patch",
+    "input": "Fix critical SQL injection vulnerability in search API endpoint immediately.",
+    "expected_category": "Bug",
+    "expected_priority": "Urgent"
+  },
+  {
+    "id": 6,
+    "label": "Ambiguous Input",
+    "input": "Do something with the stuff later when free.",
+    "expected_category": "Other",
+    "expected_priority": "Low"
+  },
+  {
+    "id": 7,
+    "label": "Refactoring Request",
+    "input": "Refactor database query functions to improve read performance.",
+    "expected_category": "Maintenance",
+    "expected_priority": "Medium"
+  },
+  {
+    "id": 8,
+    "label": "API Enhancement",
+    "input": "Implement pagination headers for the list items endpoint.",
+    "expected_category": "Development",
+    "expected_priority": "Medium"
+  }
+]

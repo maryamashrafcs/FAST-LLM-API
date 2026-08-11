@@ -2,6 +2,10 @@ import json
 import os
 import sys
 
+# Force live LLM mode for evaluation
+os.environ["LLM_STUB"] = "0"
+os.environ["LLM_ENABLED"] = "true"
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from src.llm.schemas import LLMRequest
@@ -9,7 +13,7 @@ from src.llm.client import generate_llm_response
 
 def run_evaluations():
     eval_file = os.path.join(os.path.dirname(__file__), "cases.json")
-    with open(eval_file, "r") as f:
+    with open(eval_file, "r", encoding="utf-8") as f:
         cases = json.load(f)
 
     total = len(cases)
@@ -20,14 +24,21 @@ def run_evaluations():
         req = LLMRequest(prompt=case["input"])
         try:
             res = generate_llm_response(req)
-            cat_ok = res.content.category.value == case["expected_category"]
-            prio_ok = res.content.priority.value == case["expected_priority"]
+            
+            got_cat = str(res.content.category.value).strip().lower()
+            exp_cat = str(case["expected_category"]).strip().lower()
+            
+            got_prio = str(res.content.priority.value).strip().lower()
+            exp_prio = str(case["expected_priority"]).strip().lower()
+
+            cat_ok = got_cat == exp_cat
+            prio_ok = got_prio == exp_prio
             
             if cat_ok and prio_ok:
                 passed += 1
                 status = "PASSED"
             else:
-                status = f"FAILED (Got: {res.content.category.value}/{res.content.priority.value})"
+                status = f"FAILED (Got: {res.content.category.value}/{res.content.priority.value} | Expected: {case['expected_category']}/{case['expected_priority']})"
         except Exception as e:
             status = f"ERROR ({str(e)})"
 

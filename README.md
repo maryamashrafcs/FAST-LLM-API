@@ -15,3 +15,9 @@ A production-ready FastAPI application providing structured access to Groq LLM s
 Start the server:
 ```bash
 uvicorn main:app --reload
+
+## Evaluation Benchmark
+
+- **Prompt Version:** `v1`
+- **Evaluation Date:** August 11, 2026
+- **Score:** `7/8 (87.5%)`

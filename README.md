@@ -1,41 +1,10 @@
-# FastAPI SQLite To-Do API
+# FastAPI LLM Service
 
-An interactive To-Do List API built with FastAPI and SQLite. It supports full CRUD operations, persistent database storage, and automated testing.
+A production-ready FastAPI application providing structured access to Groq LLM services with offline stubbing support, Pydantic data validation, and automated unit testing.
 
-## Overview
+## Features
 
-* **FastAPI**: Manages API routes to create, read, update, and delete tasks.
-* **SQLite**: Permanently stores task data in a local `tasks.db` file.
-* **Pytest**: Runs automated tests to ensure all API endpoints work correctly.
-
----
-
-## Setup Instructions
-
-1. **Activate Virtual Environment**:
-   `.\myenv\Scripts\Activate.ps1`
-
-2. **Install Dependencies**:
-   `pip install fastapi uvicorn httpx pytest`
-
----
-
-## Running the Server
-
-Start the application with Uvicorn:
-
-`uvicorn main:app --reload`
-
-* **Interactive API Docs**: Go to http://localhost:8000/docs in your web browser to test all endpoints.
-
-## Running Tests
-
-Execute the automated test suite using Pytest:
-
-`pytest`
-
----
-
-## Database Proof
-
-![Database Screenshot](./database_screenshot.png)
+- **Groq LLM Integration:** Fast text generation using `llama-3.3-70b-versatile`.
+- **Structured Pydantic Schemas:** Strong data validation for inputs and outputs.
+- **Offline Stub Mode:** Toggleable offline response mode via environment variables for local testing and offline development.
+- **Automated Testing:** Unit test suite using `pytest` and FastAPI `TestClient`.
